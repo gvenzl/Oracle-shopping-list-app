@@ -154,10 +154,10 @@ var app = app || {};
 			return (
 				<div>
 					<header className="header">
-						<h1>todos</h1>
+						<h1>Shopping list</h1>
 						<input
 							className="new-todo"
-							placeholder="What needs to be done?"
+							placeholder="What needs to be bought?"
 							value={this.state.newTodo}
 							onKeyDown={this.handleNewTodoKeyDown}
 							onChange={this.handleChange}
