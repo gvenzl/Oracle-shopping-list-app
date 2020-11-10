@@ -171,7 +171,7 @@ var app = app || {};
 		}
 	});
 
-	var model = new app.TodoModel('react-todos');
+	var model = new app.TodoModel('shopping-list-items');
 
 	function render() {
 		React.render(
