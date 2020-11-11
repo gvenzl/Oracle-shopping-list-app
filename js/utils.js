@@ -3,6 +3,32 @@ var app = app || {};
 (function () {
 	'use strict';
 
+    app.remoteStorage = {
+
+        restURL: "<Your REST endpoint>",
+
+        setItem: function (namespace, data) {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', this.restURL, false);
+            xhr.send(data);
+        },
+
+        getItem: function (namespace) {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', this.restURL, false);
+
+            xhr.send();
+            if (xhr.status == 200) {
+                var result = JSON.parse(xhr.response).items;
+                if (result.length > 0) {
+                   return result[0].items;
+                }
+            }
+        }
+    };
+
 	app.Utils = {
 		uuid: function () {
 			/*jshint bitwise:false */
@@ -27,10 +53,13 @@ var app = app || {};
 
 		store: function (namespace, data) {
 			if (data) {
-				return localStorage.setItem(namespace, JSON.stringify(data));
+				// localStorage.setItem(namespace, JSON.stringify(data));
+				app.remoteStorage.setItem (namespace, JSON.stringify(data));
+				return;
 			}
 
-			var store = localStorage.getItem(namespace);
+			// var store = localStorage.getItem(namespace);
+			var store = app.remoteStorage.getItem(namespace);
 			return (store && JSON.parse(store)) || [];
 		},
 
