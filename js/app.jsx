@@ -25,7 +25,8 @@ var app = app || {};
 			};
 		},
 
-		componentDidMount: function () {
+		componentDidMount: async function () {
+			await this.props.model.fetchTodos();
 			var setState = this.setState;
 			var router = Router({
 				'/': setState.bind(this, {nowShowing: app.ALL_TODOS}),
@@ -87,8 +88,7 @@ var app = app || {};
 		render: function () {
 			var footer;
 			var main;
-			var todos = this.props.model.todos;
-
+			var todos = this.props.model.todos || [];
 			var shownTodos = todos.filter(function (todo) {
 				switch (this.state.nowShowing) {
 				case app.ACTIVE_TODOS:

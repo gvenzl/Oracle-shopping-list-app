@@ -15,8 +15,12 @@ var app = app || {};
 	// separate out parts of your application.
 	app.TodoModel = function (key) {
 		this.key = key;
-		this.todos = Utils.store(key);
+		this.todos = [];
 		this.onChanges = [];
+	};
+
+	app.TodoModel.prototype.fetchTodos = async function() {
+		this.todos = await Utils.store(this.key);
 	};
 
 	app.TodoModel.prototype.subscribe = function (onChange) {
