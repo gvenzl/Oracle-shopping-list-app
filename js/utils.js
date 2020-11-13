@@ -5,7 +5,7 @@ var app = app || {};
 
     app.remoteStorage = {
 
-        restURL: "https://wkrfs4xeqva1jcu-thxgiving.adb.us-phoenix-1.oraclecloudapps.com/ords/shoppinglist/storage/items",
+        restURL: "<Your REST URL>",
 
         setItem: async function (namespace, data) {
         		const request = await fetch(this.restURL, {
