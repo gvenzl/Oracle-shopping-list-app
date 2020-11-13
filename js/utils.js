@@ -5,27 +5,24 @@ var app = app || {};
 
     app.remoteStorage = {
 
-        restURL: "<Your REST endpoint>",
+        restURL: "https://wkrfs4xeqva1jcu-thxgiving.adb.us-phoenix-1.oraclecloudapps.com/ords/shoppinglist/storage/items",
 
-        setItem: function (namespace, data) {
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', this.restURL, false);
-            xhr.send(data);
+        setItem: async function (namespace, data) {
+        		const request = await fetch(this.restURL, {
+        			method: 'POST',
+							body: data
+						});
         },
 
-        getItem: function (namespace) {
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', this.restURL, false);
-
-            xhr.send();
-            if (xhr.status == 200) {
-                var result = JSON.parse(xhr.response).items;
-                if (result.length > 0) {
-                   return result[0].items;
-                }
-            }
+        getItem: async function (namespace) {
+        		const request = await fetch(this.restURL)
+						const result = await request.json();
+        		if( request.ok ) {
+							const items = result.items;
+							if (result.items.length > 0) {
+								return JSON.parse(result.items[0].items);
+							}
+						}
         }
     };
 
@@ -51,16 +48,16 @@ var app = app || {};
 			return count === 1 ? word : word + 's';
 		},
 
-		store: function (namespace, data) {
+		store: async function (namespace, data) {
 			if (data) {
 				// localStorage.setItem(namespace, JSON.stringify(data));
-				app.remoteStorage.setItem (namespace, JSON.stringify(data));
+				await app.remoteStorage.setItem (namespace, JSON.stringify(data));
 				return;
 			}
 
 			// var store = localStorage.getItem(namespace);
-			var store = app.remoteStorage.getItem(namespace);
-			return (store && JSON.parse(store)) || [];
+			var store = await app.remoteStorage.getItem(namespace);
+			return store || [];
 		},
 
 		extend: function () {
